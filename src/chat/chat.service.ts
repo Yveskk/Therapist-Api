@@ -64,31 +64,7 @@ ${inquiryToRespond}`;
             createdAt: Date.now(),
         };
     };
-    // Response handling
-
-    private getNextMessageOrThrow = (response: CreateCompletionResponse) => {
-        const languageModelResponse = response.choices[0].text;
-        if (!languageModelResponse)
-            throw new Error('Cannot get chat dto from language model response.');
-        return languageModelResponse;
-    };
-
-    private parseResponseIntoChatMessage = (
-        languageModelResponse: string,
-    ): ChatMessageDto => {
-        // assuming format \nAUTHOR_NAME: "message"
-        const [authorNameRaw, messageInQuotes] = languageModelResponse.split(':');
-        const authorName = authorNameRaw.trim().replaceAll('\n', '');
-        const content = messageInQuotes.trim().replaceAll('"', '');
-
-        return {
-            authorName,
-            content,
-            id: crypto.randomUUID(),
-            createdAt: Date.now(),
-        };
-    };
-
+    
     private getChatDtoFromLanguageModelResponse(
         chatBeforeResponse: ChatDto,
         response: CreateCompletionResponse,
