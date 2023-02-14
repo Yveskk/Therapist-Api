@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { Configuration, OpenAIApi } from 'openai';
+import { ConfigModule } from '@nestjs/config';
 import { ChatController } from './chat.controller';
 import { ChatService } from './chat.service';
 
@@ -21,15 +22,16 @@ const buildOpenAiClient = () => {
 };
 
 @Module({
-    controllers: [ChatController],
-    providers: [
-      {
-        provide: ChatService,
-        useFactory: () => {
-          const openAiClient = buildOpenAiClient();
-          return new ChatService(openAiClient);
-        },
+  controllers: [ChatController],
+  providers: [
+    {
+      provide: ChatService,
+      useFactory: () => {
+        const openAiClient = buildOpenAiClient();
+        return new ChatService(openAiClient);
       },
-    ],
-  })
-  export class ChatModule {}
+    },
+  ],
+  imports: [ConfigModule.forRoot()],
+})
+export class ChatModule {}
